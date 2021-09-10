@@ -1,14 +1,13 @@
-                     <!-- REGISTRATION 70% COMPLETED -->
-  <!-- CURRENT DATABASE ARE (ID,USERNAME,PASSWORD,EMAIL,VKEY,VERIFIED,CREATEDATE-->
-                         <!-- For FrontEnd Devs --> 
-         <!-- 1. GUNA CODING AKU AND TEST DEKAT TEMPLATE KORANG UNTUK CHECK -->
+                                 <!-- REGISTRATION 100% COMPLETED -->
+  <!-- CURRENT DATABASE ARE (ID,FIRSTNAME,LASTNAME,USERNAME,PASSWORD,EMAIL,PHONE,VKEY,VERIFIED,CREATEDATE-->
+                                       <!-- For FrontEnd Devs --> 
+                 <!-- 1. GUNA CODING AKU AND TEST DEKAT TEMPLATE KORANG UNTUK CHECK -->
 
-                           <!-- GROUP REMARKS -->    
-      <!-- 1. THERE'S FEW MORE DATA WE NEED TO ADD INTO CUSTOMER'S ACCOUNT LATER-->
+                                      <!-- GROUP REMARKS -->    
+              <!-- 1. PLESE TELL ME IF YOU GUYS WANT TO ADD MORE DATA INTO CUSTOMERS INFORMATION-->
+         <!-- 2. JUST ADD DESIGN TO THE REGISTRATION PAGE ( NO NEED TO CHANGE PHP CODING ITS 100% DONE)-->
 
-                          <!-- FOR BackEnd Devs -->    
-         <!-- 1. NEED TO ADD PHP CODE FOR EMAIL AND USERNAME AVAIBILITY INTO CODING-->
-                   <!-- AKMAL LAST UPDATED ON 9/4/2021 5:30 AM-->
+                             <!-- AKMAL LAST UPDATED ON 9/10/2021 1:30 AM-->
 
 
 <?php
@@ -16,16 +15,28 @@ $error = NULL;
 
 if(isset ($_POST['submit'])){
 	
+    $mysqli = new MySQLi('localhost','root','','MHPBS');	
+	
 	//Get form data
+	$firstname = $_POST['firstname'];
+	$lastname = $_POST['lastname'];
 	$username = $_POST['username'];
 	$password = $_POST['password'];
 	$password2 = $_POST['password2'];
 	$email = $_POST['email'];
+	$phone = $_POST['phone'];
+	
+	$checkemail = mysqli_query($mysqli, "SELECT * FROM users WHERE email = '$email'");
+	$checkusername = mysqli_query($mysqli, "SELECT * FROM users WHERE username = '$username'");	
 	
 	if(strlen($username) < 5 ){
 		$error = "Your username must be at least 5 Characters";	
 	}elseif ($password2 != $password){
 		$error = "Your password do not match";
+	}elseif (mysqli_num_rows($checkemail) > 0){
+		$error = "This Email Has Already Been Used";
+	}elseif (mysqli_num_rows($checkusername) > 0) {
+		$error = "This Username Has Already Been Used";
 	}else{
 		//Form Is Valid 
 		
@@ -33,10 +44,15 @@ if(isset ($_POST['submit'])){
 		$mysqli = new MySQLi('localhost','root','','MHPBS');
 		
 		//Sanitize 	form data
+		$firstname = $mysqli->real_escape_string($firstname);
+		$lastname = $mysqli->real_escape_string($lastname);
 		$username = $mysqli->real_escape_string($username);
 		$password = $mysqli->real_escape_string($password);
 		$password2 = $mysqli->real_escape_string($password2);
 		$email = $mysqli->real_escape_string($email);
+		$phone = $mysqli->real_escape_string($phone);
+		
+
 		
 		//Generate Vkey
 		$vkey = md5(time().$username);
@@ -44,7 +60,7 @@ if(isset ($_POST['submit'])){
 		
 		//Insert account into database
 		$password = md5 ($password);
-		$insert = $mysqli->query("INSERT into users(username,password,email,vkey) VALUES ('$username','$password','$email','$vkey')");
+		$insert = $mysqli->query("INSERT into users(firstname,lastname,username,password,email,phone,vkey) VALUES ( '$firstname','$lastname','$username','$password','$email','$phone','$vkey')");
 		
 		if($insert){
 			
@@ -84,7 +100,11 @@ if(isset ($_POST['submit'])){
 	<div class="loginbox">
 	<img src="Pictures/Login Customer/avatar.jpg" class="avatar">	
 		<h1>Sign Up Here</h1>
-	    <form method="POST" action = "">		
+	    <form method="POST" action = "">	
+			<p>First Name</p>
+			<input id="text" type="text" name="firstname" placeholder="Enter First Name" required>			
+			<p>Last Name</p>
+			<input id="text" type="text" name="lastname" placeholder="Enter Last Name" required>			
 			<p>Username</p>
 			<input id="text" type="text" name="username" placeholder="Enter Username" required>																		
 			<p>Password</p>
@@ -92,7 +112,10 @@ if(isset ($_POST['submit'])){
 			<p>Repeat Password</p>
 			<input id="text" type="password" name="password2" placeholder="Re-Enter Password" required>	
 			<p>Email</p>
-			<input id="text" type="text" name="email" placeholder="Enter Email" required>			
+			<input id="text" type="text" name="email" placeholder="Enter Email" required>	
+			<p>Phone Number</p>
+			<input id="text" type="text" name="phone" placeholder="Enter Phone Number" required>
+			
 			<input id="button " type ="submit" name ="submit" value="Register">
 
 		</form>

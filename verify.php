@@ -1,4 +1,4 @@
-                                             <!-- verification coding 100% COMPLETED -->
+                                             <!-- Verification Coding 100% COMPLETED -->
 <!-- NO NEED TO CHANGE ANYTHING SINCE THIS CODE IS FOR CHANGING VERIFIED STATUS IN DATABASE FROM 0 TO 1 AFTER CLICKING A LINK FROM REGISTERED EMAIL-->
                                             <!-- AKMAL LAST UPDATED ON 9/4/2021 5:30 AM-->
 

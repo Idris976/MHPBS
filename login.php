@@ -1,7 +1,7 @@
-                    <!-- LOG IN / LOG OUT 80% COMPLETED -->
-                       <!-- For Ridhwan BackEnd Devs-->   
-          <!-- 1. NEED TO ADD RESET PASSWORD FEATURE INTO LOGIN / LOGOUT FEATURE-->
-                    <!-- AKMAL LAST UPDATED ON 9/4/2021 5:30 AM-->
+                    <!-- LOG IN 80% COMPLETED -->
+                   <!-- For Ridhwan BackEnd Devs-->   
+    <!-- 1. NEED TO ADD RESET PASSWORD FEATURE INTO LOGIN / LOGOUT FEATURE-->
+             <!-- AKMAL LAST UPDATED ON 9/10/2021 1:30 AM-->
 
 
 
@@ -67,7 +67,7 @@ if(isset($_POST['submit'])){
 
 	<div class="loginbox">
 	<img src="Pictures/Login Customer/avatar.jpg" class="avatar">	
-		<h1>Sign Up Here</h1>
+		<h1>Log In Here</h1>
 	    <form method="POST" action = "">		
 			<p>Username</p>
 			<input id="text" type="text" name="username" placeholder="Enter Username" >																		

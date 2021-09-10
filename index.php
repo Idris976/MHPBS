@@ -17,9 +17,8 @@ session_start();
 </head>
 <h1>WELCOME TO HOTEL MARRIOTT PUTRAJAYA </h1>
 	<br>
-	<?php echo "Welcome" . $_SESSION['user'] ?> 
-	<br>
-	<br>
+	<?php echo "Welcome"?> <br>
+	<?php echo $_SESSION['user'] ?> <br>
 	<a href="logout.php">Click here to Log Out</a>
 <body>
 </body>
