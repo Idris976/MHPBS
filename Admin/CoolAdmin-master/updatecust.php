@@ -1,63 +1,37 @@
 <?php
-session_start();
+include 'database.php';
+$id = $_GET['updateid'];
 
-$error = NULL;
+//Show data frm database
+$sql="SELECT * FROM users where id=$id";
+$result=mysqli_query($connection,$sql);
+$row=mysqli_fetch_assoc($result);
+$firstname= $row['firstname'];
+$lastname=$row['lastname'];
+$email=$row['email']; 
+$phone=$row['phone'];
 
+
+//update new data 
 if(isset($_POST['submit'])){
-	//Connect to the Database
-	$username = $_POST ['username'];
-	$password = $_POST ['password'];	
-	
-	$mysqli = new MySQLi('localhost','root','','MHPBS');
-	
-	//Get form data
-	$username = $mysqli->real_escape_string($_POST['username']);
-	$password = $mysqli->real_escape_string($_POST['password']);
-	$password = md5 ($password);
-	
-	//Query the database
-	$resultSet = $mysqli->query("SELECT * FROM admin_users WHERE username = '$username' AND password = '$password' LIMIT 1");
-	
-	if($resultSet->num_rows !=0){
-		//Process Loginaa
-		$row = $resultSet->fetch_assoc();
-		$verified = $row['verified'];
-        $id = $row['id'];
-		$email = $row['email'];
-		$firstname = $row['firstname'];
-		$lastname = $row['lastname'];
-		$phone = $row['phone'];
-		$createdate = $row['createdate'];
-		$date = $row['createdate'];
-		$date = strtotime($date);
-		$date = date('M d Y',$date);;
-		
-		
-		if($verified == 1){
-			//Continue Processing
-			echo "Your account was verified and you have been logged in";
-			
-			$_SESSION['loggedin'] = TRUE;
-            $_SESSION['id'] = $id;
-			$_SESSION['username'] = $username;
-			$_SESSION['firstname'] = $firstname;
-			$_SESSION['email'] = $email;
-			$_SESSION['lastname'] = $lastname;
-			$_SESSION['phone'] = $phone;
-			$_SESSION['createdate'] = $createdate;
-			
-			header ('location:index.php');
-			die;
-		}else{
-			$error = "This account has not yet been verified. An email was sent to $email on $date";	
-		}
-	}else{
-		//Invalid Credentials
-		$error = "The Username Or Password you entered is incorect";
-	}
-	
+    $firstname=$_POST['firstname'];
+    $lastname=$_POST['lastname'];
+    $email=$_POST['email'];
+    $phone=$_POST['phone'];
+
+    $sql="UPDATE users SET id=$id, firstname='$firstname',lastname='$lastname',email='$email',phone='$phone' where id=$id ";
+    $result=mysqli_query($connection,$sql);
+    
+    if($result){
+        //echo"update succesfully";
+        header('location:viewcust.php');
+		exit;
+    }else{
+        die("Connection failed " . $connection->connect_error);
+    }
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -70,7 +44,7 @@ if(isset($_POST['submit'])){
     <meta name="keywords" content="au theme template">
 
     <!-- Title Page-->
-    <title>Login</title>
+    <title>Update Customer Detail</title>
 
     <!-- Fontfaces CSS-->
     <link href="css/font-face.css" rel="stylesheet" media="all">
@@ -107,32 +81,26 @@ if(isset($_POST['submit'])){
                             </a>
                         </div>
                         <div class="login-form">
-                            <form action="" method="post">
+                            <form action="" method="POST">
                                 <div class="form-group">
-                                    <label>Username</label>
-                                    <input class="au-input au-input--full" type="text" name="username" placeholder="Username">
+                                    <label>First Name</label>
+                                    <input class="au-input au-input--full" type="text" name="firstname" placeholder="First Name" value="<?php echo $row['firstname'];?>">
                                 </div>
                                 <div class="form-group">
-                                    <label>Password</label>
-                                    <input class="au-input au-input--full" type="password" name="password" placeholder="Password">
+                                    <label>Last Name</label>
+                                    <input class="au-input au-input--full" type="text" name="lastname" placeholder="Last Name" value="<?php echo $row['lastname'];?>">
                                 </div>
-                                <div class="login-checkbox">
-                                    <label>
-                                        <input type="checkbox" name="remember">Remember Me
-                                    </label>
-                                    <label>
-                                        <a href="admin_forgot.php">Forgotten Password?</a>
-                                    </label>
+                                <div class="form-group">
+                                    <label>Email</label>
+                                    <input class="au-input au-input--full" type="text" name="email" placeholder="Email" value="<?php echo $row['email'];?>">
                                 </div>
-											<input class="au-btn au-btn--block au-btn--green m-b-20" type ="submit" name = "submit" value="Sign In">
+                                <div class="form-group">
+                                    <label>Phone Number</label>
+                                    <input class="au-input au-input--full" type="text" name="phone" placeholder="Phone Number" value="<?php echo $row['phone'];?>">
+                                </div>
+
+								                <input class="au-btn au-btn--block au-btn--green m-b-20" id="button" type ="submit" name ="submit" value="Update">
                             </form>
-                            <div class="register-link">
-                                <p>
-									<?php  echo $error  ?><br><br>
-                                    Don't Have An Account?
-                                    <a href="registration.php">Sign Up Here</a>
-                                </p>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -166,6 +134,3 @@ if(isset($_POST['submit'])){
     <script src="js/main.js"></script>
 
 </body>
-
-</html>
-<!-- end document-->

@@ -1,11 +1,51 @@
-<!DOCTYPE html>
-<html>
-<head>
-<title>Rooms</title>
 <?php
-include 'database.php';
-	session_start();
+session_start();
 ?>
+<?php
+$error = NULL;
+$notice = NULL;
+
+if(isset ($_POST['submit'])){
+	
+    $mysqli = new MySQLi('localhost','root','','MHPBS');	
+	
+	//Get form data
+	$name = $_POST['name'];
+	$room_number = $_POST['room_number'];
+	$price = $_POST['price'];
+
+	
+	$checkroom_number = mysqli_query($mysqli, "SELECT * FROM rooms WHERE room_number = '$room_number'");
+	
+	if(mysqli_num_rows($checkroom_number) > 0){
+		$error = "This Room Number Has Already Been Registered!";
+	}else{
+		//Form Is Valid 
+		
+		//Connect To Database
+		$mysqli = new MySQLi('localhost','root','','MHPBS');
+		
+		//Sanitize 	form data
+		$name = $mysqli->real_escape_string($name);
+		$room_number = $mysqli->real_escape_string($room_number);
+		$price = $mysqli->real_escape_string($price);
+
+		$insert = $mysqli->query("INSERT into rooms(name,room_number,price) VALUES ('$name','$room_number','$price')");
+		
+		if($insert){
+			
+			header("Location: viewroom.php");
+		    exit;				
+		
+		}else{
+			echo $mysqli->error;
+		}
+		
+	} 
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -18,12 +58,12 @@ include 'database.php';
     <meta name="keywords" content="au theme template">
 
     <!-- Title Page-->
-    <title>Forms</title>
+    <title>Add Room</title>
 
     <!-- Fontfaces CSS-->
     <link href="css/font-face.css" rel="stylesheet" media="all">
-    <link href="vendor/font-awesome-5/css/fontawesome-all.min.css" rel="stylesheet" media="all">
     <link href="vendor/font-awesome-4.7/css/font-awesome.min.css" rel="stylesheet" media="all">
+    <link href="vendor/font-awesome-5/css/fontawesome-all.min.css" rel="stylesheet" media="all">
     <link href="vendor/mdi-font/css/material-design-iconic-font.min.css" rel="stylesheet" media="all">
 
     <!-- Bootstrap CSS-->
@@ -55,14 +95,14 @@ include 'database.php';
             <div class="menu-sidebar__content js-scrollbar1">
                 <nav class="navbar-sidebar">
                     <ul class="list-unstyled navbar__list">
-                        <li class="has-sub">
+                        <li class="active has-sub">
                             <a class="js-arrow" href="index.php">
                                 <i class="fas fa-tachometer-alt"></i>Dashboard</a>
                             <ul class="list-unstyled navbar__sub-list js-sub-list"></ul>
                         </li>
-                        <li class="active">
+                        <li>
                             <a href="viewcust.php">
-                                <i class="far fa-check-square"></i>Customer</a>
+                                <i class="far fa-check-square"></i>Customers</a>
                         </li>
                         <li>
                             <a href="addroom.php">
@@ -86,9 +126,7 @@ include 'database.php';
                     <div class="container-fluid">
                         <div class="header-wrap">
                             <form class="form-header" action="" method="POST">
-                                <input class="au-input au-input--xl" type="text" name="search" placeholder="Search for datas &amp; reports..." />
-                                <button class="au-btn--submit" type="submit">
-                                    <i class="zmdi zmdi-search"></i>
+                                
                                 </button>
                             </form>
                             <div class="header-button">
@@ -129,7 +167,7 @@ include 'database.php';
                                                 </div>
                                             </div>
                                             <div class="account-dropdown__footer">
-                                                <a href="../../Customer/home.php">
+                                                <a href="logout.php">
                                                     <i class="zmdi zmdi-power"></i>Logout</a>
                                             </div>
                                         </div>
@@ -147,52 +185,43 @@ include 'database.php';
                 <div class="section__content section__content--p30">
                     <div class="container-fluid">
                         <div class="row">
-                            <div class="col-lg-6">
-                                <link rel="stylesheet" href="table.css">
-                                    <table class="content-table">
-                                        <thead>
-                                            <tr>
-                                                <th scope="col">Room Type</th>
-                                                <th scope="col">Room Number</th>
-                                                <th scope="col">Price</th>
-                                                <th scope="col">Action</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <?php
-                                                $conn = mysqli_connect("localhost", "root", "", "MHPBS");
-                                                // Check connection
-                                                if ($conn->connect_error) 
-                                                {
-                                                    die("Connection failed: " . $conn->connect_error);
-                                                }
-                                                $sql = "SELECT name, room_number, price FROM rooms";
-                                                $result = $conn->query($sql);
-                                                if ($result->num_rows > 0) 
-                                                {
-                                                    // output data of each row
-                                                    while($row = $result->fetch_assoc()) {
-                                                    echo "<tr><td>" . $row["name"]. "</td><td>" . $row["room_number"] . "</td><td>"
-                                                    . $row["price"] . "</td><td>" . "<a href = 'deleteroom.php?rn=$row[room_number]'>Delete" ."</td></tr>";
-                                                }
-                                                echo "</table>";
-                                                } 
-                                                else 
-                                                { 
-                                                    echo "0 results"; 
-                                                }
-                                                    $conn->close();
-                                            ?>
-                                        </tbody>
-                                    </table>
-                                </link>
-                            </div>
-                        </div>        
+                            <div class="col-md-12">
+								<div class="container">
+    								<div class="login-wrap">
+       	 								<div class="login-content">
+            								<div class="login-logo">
+                								<a href="#">
+                    								<img src="images/icon/admindashboard1.png" alt="CoolAdmin">
+               	 								</a>
+            								</div>
+            									<div class="login-form">
+                									<form action="" method="POST">
+                        								<div class="form-group">
+                            								<label>Room Name</label>
+                            								<input class="au-input au-input--full" type="text" name="name" placeholder="Room Name">
+                        								</div>
+                        									<div class="form-group">
+                            									<label>Room Number</label>
+                            									<input class="au-input au-input--full" type="text" name="room_number" placeholder="Room Number">
+                        									</div>
+                        										<div class="form-group">
+                            										<label>Price</label>
+                            										<input class="au-input au-input--full" type="text" name="price" placeholder="Price">
+                        										</div>
+															<input class="au-btn au-btn--block au-btn--green m-b-20" id="button" type ="submit" name ="submit" value="Submit">
+                   	 								</form>
+												</div>
+										</div>	
+									</div>
+								</div>
+           					</div>
+						</div>
                     </div>
                 </div>
             </div>
+            <!-- END MAIN CONTENT-->
+            <!-- END PAGE CONTAINER-->
         </div>
-
     </div>
 
     <!-- Jquery JS-->
@@ -221,40 +250,79 @@ include 'database.php';
 
 </body>
 
-</html>
-<!-- end document-->
 
 
 
 
 
-<body>
-<table>
-<tr>
-<th>Room Type</th>
-<th>Room Number</th>
-<th>Price</th>
-<th>Action</th>
-</tr>
+
+
+
+
+
+
+
 <?php
-$conn = mysqli_connect("localhost", "root", "", "MHPBS");
-// Check connection
-if ($conn->connect_error) {
-die("Connection failed: " . $conn->connect_error);
-}
-$sql = "SELECT name, room_number, price FROM rooms";
-$result = $conn->query($sql);
-if ($result->num_rows > 0) {
-// output data of each row
-while($row = $result->fetch_assoc()) {
-echo "<tr><td>" . $row["name"]. "</td><td>" . $row["room_number"] . "</td><td>"
-. $row["price"] . "</td><td>" . "<a href = 'deleteroom.php?rn=$row[room_number]'>Delete" ."</td></tr>";
-}
-echo "</table>";
-} else { echo "0 results"; }
-$conn->close();
-?>
-</table>
-</body>
-</html>
+$error = NULL;
+$notice = NULL;
 
+if(isset ($_POST['submit'])){
+	
+    $mysqli = new MySQLi('localhost','root','','MHPBS');	
+	
+	//Get form data
+	$name = $_POST['name'];
+	$room_number = $_POST['room_number'];
+	$price = $_POST['price'];
+
+	
+	$checkroom_number = mysqli_query($mysqli, "SELECT * FROM rooms WHERE room_number = '$room_number'");
+	
+	if(mysqli_num_rows($checkroom_number) > 0){
+		$error = "This Room Number Has Already Been Registered!";
+	}else{
+		//Form Is Valid 
+		
+		//Connect To Database
+		$mysqli = new MySQLi('localhost','root','','MHPBS');
+		
+		//Sanitize 	form data
+		$name = $mysqli->real_escape_string($name);
+		$room_number = $mysqli->real_escape_string($room_number);
+		$price = $mysqli->real_escape_string($price);
+
+		$insert = $mysqli->query("INSERT into rooms(name,room_number,price) VALUES ('$name','$room_number','$price')");
+		
+		if($insert){
+			
+			header("Location: index.php");
+		    exit;				
+		
+		}else{
+			echo $mysqli->error;
+		}
+		
+	} 
+}
+
+?>
+
+                            <form action="" method="POST">
+                                <div class="form-group">
+                                    <label>Room Name</label>
+                                    <input class="" type="text" name="name" placeholder="Room Name">
+                                </div>
+                                <div class="form-group">
+                                    <label>Room Number</label>
+                                    <input class="" type="text" name="room_number" placeholder="Room Number">
+                                </div>
+                                <div class="form-group">
+                                    <label>Username</label>
+                                    <input class="" type="text" name="price" placeholder="Price">
+                                </div>															
+								<input class="au-btn au-btn--block au-btn--green m-b-20" id="button" type ="submit" name ="submit" value="Add Room">
+                            </form>
+							
+<?php
+ echo $error;
+?>

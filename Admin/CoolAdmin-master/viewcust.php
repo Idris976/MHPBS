@@ -1,11 +1,8 @@
-<!DOCTYPE html>
-<html>
-<head>
-<title>Rooms</title>
 <?php
+session_start();
 include 'database.php';
-	session_start();
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -61,7 +58,7 @@ include 'database.php';
                             <ul class="list-unstyled navbar__sub-list js-sub-list"></ul>
                         </li>
                         <li class="active">
-                            <a href="viewcust.php">
+                            <a href="form.html">
                                 <i class="far fa-check-square"></i>Customer</a>
                         </li>
                         <li>
@@ -152,36 +149,41 @@ include 'database.php';
                                     <table class="content-table">
                                         <thead>
                                             <tr>
-                                                <th scope="col">Room Type</th>
-                                                <th scope="col">Room Number</th>
-                                                <th scope="col">Price</th>
+                                                <th scope="col">ID</th>
+                                                <th scope="col"> First Name</th>
+                                                <th scope="col">Last Name</th>
+                                                <th scope="col">Email</th>
+                                                <th scope="col">Contact Number</th>
                                                 <th scope="col">Action</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <?php
-                                                $conn = mysqli_connect("localhost", "root", "", "MHPBS");
-                                                // Check connection
-                                                if ($conn->connect_error) 
+                                        <?php
+                                                $sql = "SELECT * FROM users";
+                                                $result =  mysqli_query($connection,$sql);
+                                                if($result)
                                                 {
-                                                    die("Connection failed: " . $conn->connect_error);
+                                                    while($row=mysqli_fetch_assoc($result))
+                                                    {
+                                                        $id=$row['id'];
+                                                        $firstname= $row['firstname'];
+                                                        $lastname= $row['lastname'];
+                                                        $email=$row['email']; 
+                                                        $phone=$row['phone'];
+                                                        echo
+                                                        '<tr>
+                                                            <th scope="row">'.$id.'</th>
+                                                            <td>'.$firstname.'</td>
+                                                            <td>'.$lastname.'</td>
+                                                            <td>'.$email.'</td>
+                                                            <td>'.$phone.'</td>
+                                                            <td>
+                                                                <button class="btn btn-success"><a href="updatecust.php?updateid='.$id.'" class="text-light">Update</a></button>
+                                                                <button class="btn btn-danger"><a href="deletecust.php?deleteid='.$id.'" class="text-light">Delete</a> </button>
+                                                            </td>
+                                                        </tr>';
+                                                    }
                                                 }
-                                                $sql = "SELECT name, room_number, price FROM rooms";
-                                                $result = $conn->query($sql);
-                                                if ($result->num_rows > 0) 
-                                                {
-                                                    // output data of each row
-                                                    while($row = $result->fetch_assoc()) {
-                                                    echo "<tr><td>" . $row["name"]. "</td><td>" . $row["room_number"] . "</td><td>"
-                                                    . $row["price"] . "</td><td>" . "<a href = 'deleteroom.php?rn=$row[room_number]'>Delete" ."</td></tr>";
-                                                }
-                                                echo "</table>";
-                                                } 
-                                                else 
-                                                { 
-                                                    echo "0 results"; 
-                                                }
-                                                    $conn->close();
                                             ?>
                                         </tbody>
                                     </table>
@@ -223,38 +225,3 @@ include 'database.php';
 
 </html>
 <!-- end document-->
-
-
-
-
-
-<body>
-<table>
-<tr>
-<th>Room Type</th>
-<th>Room Number</th>
-<th>Price</th>
-<th>Action</th>
-</tr>
-<?php
-$conn = mysqli_connect("localhost", "root", "", "MHPBS");
-// Check connection
-if ($conn->connect_error) {
-die("Connection failed: " . $conn->connect_error);
-}
-$sql = "SELECT name, room_number, price FROM rooms";
-$result = $conn->query($sql);
-if ($result->num_rows > 0) {
-// output data of each row
-while($row = $result->fetch_assoc()) {
-echo "<tr><td>" . $row["name"]. "</td><td>" . $row["room_number"] . "</td><td>"
-. $row["price"] . "</td><td>" . "<a href = 'deleteroom.php?rn=$row[room_number]'>Delete" ."</td></tr>";
-}
-echo "</table>";
-} else { echo "0 results"; }
-$conn->close();
-?>
-</table>
-</body>
-</html>
-

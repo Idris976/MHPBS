@@ -1,5 +1,26 @@
 <?php
 session_start();
+
+if (!(isset($_SESSION['username']) && $_SESSION['username'] != ''))
+{
+	header ("index.php");
+}
+
+require "database.php";
+
+$id = $_SESSION['id'];
+
+$sql = "SELECT * FROM users WHERE id = '$id'";
+$result =  mysqli_query($connection,$sql);
+$row=mysqli_fetch_assoc($result);
+
+$username = $row['username'];
+$email = $row['email'];
+$firstname = $row['firstname'];
+$lastname = $row['lastname'];
+$phone = $row['phone'];
+$createdate = $row['createdate'];
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -30,7 +51,22 @@ session_start();
               <div class="card">
                 <div class="card-body">
                   <div class="d-flex flex-column align-items-center text-center">
-                    <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="Admin" class="rounded-circle" width="150">
+
+                  <!-- php image -->
+                  <?php
+                      $id = $_SESSION['id'];
+                      $connection = mysqli_connect("localhost","root","","mhpbs");
+                      $result = mysqli_query($connection,'SELECT * FROM users WHERE  id ="'.$id.'" ');
+                      while($row=mysqli_fetch_assoc($result)){
+                        if($row['image_customer']==''){
+                          echo "<img src='uploads/default.jfif' alt='custdefault' class='rounded-circle' width='150'>";
+                        }else{
+                          echo "<img src='uploads/".$row['image_customer']."' alt='cust' class='rounded-circle' width='150'>";
+                        }
+                      }
+                      ?>
+
+                    
                     <div class="mt-3">
                       <h4><?php echo $_SESSION['username'] ?></h4>
                       <p class="text-secondary mb-1">Full Stack Developer</p>
@@ -71,8 +107,8 @@ session_start();
                     <div class="col-sm-3">
                       <h6 class="mb-0">Firstname</h6>
                     </div>
-                    <div class="col-sm-9 text-secondary">
-                      <?php echo $_SESSION['firstname'] ?>
+                    <div class="col-sm-9 text-secondary ">
+                      <?php  echo $firstname?>
                     </div>
                   </div>
                   <hr>
@@ -81,7 +117,7 @@ session_start();
                       <h6 class="mb-0">Last Name</h6>
                     </div>
                     <div class="col-sm-9 text-secondary">
-                      <?php echo $_SESSION['lastname'] ?>
+                      <?php echo $lastname?>
                     </div>
                   </div>
                   <hr>
@@ -90,7 +126,7 @@ session_start();
                       <h6 class="mb-0">Email</h6>
                     </div>
                     <div class="col-sm-9 text-secondary">
-                      <?php echo $_SESSION['email'] ?>
+                      <?php echo $email?>
                     </div>
                   </div>
                   <hr>
@@ -99,22 +135,36 @@ session_start();
                       <h6 class="mb-0">Phone Number</h6>
                     </div>
                     <div class="col-sm-9 text-secondary">
-                      <?php echo $_SESSION['phone'] ?>
+                      <?php echo $phone?>
                     </div>
                   </div>
                   <hr>
                   <div class="row">
                     <div class="col-sm-3">
-                      <h6 class="mb-0">Create Date</h6>
+                      <h6 class="mb-0">Last Updated</h6>
                     </div>
                     <div class="col-sm-9 text-secondary">
-                      <?php echo $_SESSION['createdate'] ?>
+                      <?php echo $createdate?>
                     </div>
                   </div>
                   <hr>
+
+                  <!-- Update Picture Button -->
                   <div class="row">
                     <div class="col-sm-12">
-                      <a class="btn btn-info " target="__blank" href="https://www.bootdey.com/snippets/view/profile-edit-data-and-skills">Edit</a>
+                      <form action="upload.php" method="post" enctype="multipart/form-data">
+                      <input type="file" name="image_customer">
+                      <input type="submit" name="upload_image_customer" value="upload" class="btn btn-primary">
+                      </form>
+                      
+                    </div>
+                  </div>
+
+
+
+                  <div class="row">
+                    <div class="col-sm-12">
+                      <a class="btn btn-info " target="__blank" href="update_form_cust.php">Edit</a>
                     </div>
                   </div>
                 </div>

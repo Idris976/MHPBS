@@ -1,4 +1,4 @@
-<?php
+	<?php
 session_start();
 
 $error = NULL;
@@ -7,6 +7,7 @@ if(isset($_POST['submit'])){
 	//Connect to the Database
 	$username = $_POST ['username'];
 	$password = $_POST ['password'];	
+ 
 	
 	$mysqli = new MySQLi('localhost','root','','MHPBS');
 	
@@ -21,6 +22,7 @@ if(isset($_POST['submit'])){
 	if($resultSet->num_rows !=0){
 		//Process Login
 		$row = $resultSet->fetch_assoc();
+    $id = $row['id'];
 		$verified = $row['verified'];
 		$email = $row['email'];
 		$firstname = $row['firstname'];
@@ -39,6 +41,7 @@ if(isset($_POST['submit'])){
 			
 			$_SESSION['loggedin'] = TRUE;
 			$_SESSION['username'] = $username;
+      $_SESSION['id'] = $id;
 			$_SESSION['firstname'] = $firstname;
 			$_SESSION['email'] = $email;
 			$_SESSION['lastname'] = $lastname;

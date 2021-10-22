@@ -1,5 +1,27 @@
 <?php
 session_start();
+if (!(isset($_SESSION['username']) && $_SESSION['username'] != ''))
+{
+	header ("index.php");
+}
+
+require "database.php";
+
+$id = $_SESSION['id'];
+
+$sql = "SELECT * FROM admin_users WHERE id = '$id'";
+$result =  mysqli_query($connection,$sql);
+$row=mysqli_fetch_assoc($result);
+
+
+$username = $row['username'];
+$email = $row['email'];
+$firstname = $row['firstname'];
+$lastname = $row['lastname'];
+$phone = $row['phone'];
+$image = $row['image_admin']
+
+
 ?>
 
 <!DOCTYPE html>
@@ -31,8 +53,23 @@ session_start();
               <div class="card">
                 <div class="card-body">
                   <div class="d-flex flex-column align-items-center text-center">
-                    <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="Admin" class="rounded-circle" width="150">
-                    <div class="mt-3">
+
+                  <!-- Php image -->
+                      <?php
+                      $id = $_SESSION['id'];
+                      $connection = mysqli_connect("localhost","root","","mhpbs");
+                      $result = mysqli_query($connection,'SELECT * FROM admin_users WHERE  id ="'.$id.'" ');
+                      while($row=mysqli_fetch_assoc($result)){
+                      //echo $row ['username'].'<br>';
+                        if($row['image_admin']==''){
+                          echo "<img src='uploads/default.png' alt='admin' class='rounded-circle' width='150'>";
+                        }else{
+                          echo "<img src='uploads/".$row['image_admin']."' alt='admin' class='rounded-circle' width='150'>";
+                        }
+                      }
+                      ?>
+
+                      <div class="mt-3">
                       <h4><?php echo $_SESSION['username'] ?></h4>
                       <p class="text-secondary mb-1">Full Stack Developer</p>
                       <p class="text-muted font-size-sm">Bay Area, San Francisco, CA</p>
@@ -65,7 +102,8 @@ session_start();
                 </ul>
               </div>
             </div>
-            <div class="col-md-8">
+                  <hr>
+                 <div class="col-md-8">
               <div class="card mb-3">
                 <div class="card-body">
                   <div class="row">
@@ -73,7 +111,7 @@ session_start();
                       <h6 class="mb-0">First Name</h6>
                     </div>
                     <div class="col-sm-9 text-secondary">
-                      <?php echo $_SESSION['firstname'] ?>
+                    <?php echo $firstname?>
                     </div>
                   </div>
                   <hr>
@@ -82,7 +120,7 @@ session_start();
                       <h6 class="mb-0">Last Name</h6>
                     </div>
                     <div class="col-sm-9 text-secondary">
-                      <?php echo $_SESSION['lastname'] ?>
+                    <?php echo $lastname?>
                     </div>
                   </div>
                   <hr>
@@ -91,8 +129,8 @@ session_start();
                       <h6 class="mb-0">Email</h6>
                     </div>
                     <div class="col-sm-9 text-secondary">
-                      <?php echo $_SESSION['email'] ?>
-                    </div>
+                    <?php echo $email?>
+                    </div>                                                                                            
                   </div>
                   <hr>
                   <div class="row">
@@ -100,27 +138,32 @@ session_start();
                       <h6 class="mb-0">Phone Number</h6>
                     </div>
                     <div class="col-sm-9 text-secondary">
-                      <?php echo $_SESSION['phone'] ?>
+                    <?php echo $phone?>
                     </div>
                   </div>
                   <hr>
-                  <div class="row">
-                    <div class="col-sm-3">
-                      <h6 class="mb-0">Create Date</h6>
-                    </div>
-                    <div class="col-sm-9 text-secondary">
-                      <?php echo $_SESSION['createdate'] ?>
-                    </div>
-                  </div>
-                  <hr>
+
+
+                  <!--Upload image button -->
                   <div class="row">
                     <div class="col-sm-12">
-                      <a class="btn btn-info " target="__blank" href="https://www.bootdey.com/snippets/view/profile-edit-data-and-skills">Edit</a>
+                      <form action="upload.php" method="post" enctype="multipart/form-data">
+                      <input type="file" name="image_admin">
+                      <input type="submit" name="upload_image_admin" value="upload" class="btn btn-primary">
+                      </form>
+                      
+                    </div>
+                  </div>
+                            
+               
+                  <div class="row">
+                    <div class="col-sm-12">
+                      <a class="btn btn-info " target="__blank" href="edit_profile_admin.php">Edit Details</a>
                     </div>
                   </div>
                 </div>
               </div>
-
+              
               <div class="row gutters-sm">
                 <div class="col-sm-6 mb-3">
                   <div class="card h-100">
@@ -185,6 +228,10 @@ session_start();
 
         </div>
     </div>
+            
+             
+                 
+             
 
 <style type="text/css">
 body{

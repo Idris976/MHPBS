@@ -1,4 +1,6 @@
-<?php include 'header-2.php';?>
+<?php include 'header-2.php';
+session_start();
+?>
 <div class="container">
 
        <h1 class="title">Gallery</h1>

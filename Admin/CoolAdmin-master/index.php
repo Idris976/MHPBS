@@ -54,17 +54,21 @@ session_start();
                 <nav class="navbar-sidebar">
                     <ul class="list-unstyled navbar__list">
                         <li class="active has-sub">
-                            <a class="js-arrow" href="index.html">
+                            <a class="js-arrow" href="index.php">
                                 <i class="fas fa-tachometer-alt"></i>Dashboard</a>
                             <ul class="list-unstyled navbar__sub-list js-sub-list"></ul>
                         </li>
                         <li>
-                            <a href="form.html">
-                                <i class="far fa-check-square"></i>Forms</a>
+                            <a href="viewcust.php">
+                                <i class="far fa-check-square"></i>Customers</a>
                         </li>
                         <li>
-                            <a href="calendar.html">
-                                <i class="fas fa-calendar-alt"></i>Calendar</a>
+                            <a href="addroom.php">
+                                <i class="fas fa-calendar-alt"></i>Add Rooms</a>
+                        </li>
+                        <li>
+                            <a href="viewroom.php">
+                                <i class="fas fa-calendar-alt"></i>View Rooms</a>
                         </li>
                     </ul>
                 </nav>

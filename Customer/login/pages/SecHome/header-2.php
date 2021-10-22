@@ -74,7 +74,7 @@
               <a href="dashboard/profile.php">Profile</a>
               <a href="#">Booking</a></li>
               <a href="#">Booking History</a>
-              <a href="../../../home.php">Logout</a>
+              <a href="logout.php">Logout</a>
             </ul>
         </li>
       </ul>
