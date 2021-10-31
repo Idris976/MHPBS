@@ -72,7 +72,7 @@
         <li class=dropbtn><a href="#">Account</a>
             <ul class="dropdown-content">
               <a href="dashboard/profile.php">Profile</a>
-              <a href="#">Booking</a></li>
+              <a href="makebooking.php">Booking</a></li>
               <a href="#">Booking History</a>
               <a href="logout.php">Logout</a>
             </ul>

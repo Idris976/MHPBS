@@ -149,16 +149,19 @@ include 'database.php';
                         <div class="row">
                             <div class="col-lg-6">
                                 <link rel="stylesheet" href="table.css">
-								<h3>Deluxe Guest Room</h3>
+								<h3>Pending Bookings</h3>
                                     <table class="content-table">
                                         <thead>
                                             <tr>
-                                                <th scope="col">Room Number</th>
-                                                <th scope="col">Room Type</th>
-                                                <th scope="col">Price</th>
+                                                <th scope="col">Booking ID</th>
+												<th scope="col">Email</th>
+												<th scope="col">Checkin</th>
+												<th scope="col">Checkout</th>
+												<th scope="col">Room Type</th>
+												<th scope="col">Room Number</th>
 												<th scope="col">Status</th>
-												<th scope="col">Update Status</th>
-                                                <th scope="col">Action</th>							
+												<th scope="col">Actions</th>
+												
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -169,7 +172,7 @@ include 'database.php';
                                                 {
                                                     die("Connection failed: " . $conn->connect_error);
                                                 }
-                                                $sql = "SELECT name, room_number, price, status FROM rooms WHERE name = 'Deluxe Guest Room'";
+                                                $sql = "SELECT bookingID, email, checkin, checkout, roomtype, room_number, status  FROM bookings WHERE status = '0'";
                                                 $result = $conn->query($sql);
 																								
                                                 if ($result->num_rows > 0)  
@@ -177,42 +180,45 @@ include 'database.php';
                                                     // output data of each row
                                                     while($row = $result->fetch_assoc()) {
                                                     echo "<tr>";
-                                                    echo "<td>" . $row['room_number'] . "</td>";
-                                                    echo "<td>" . $row['name'] . "</td>";
-                                                    echo "<td>" . $row['price'] . "</td>";
+                                                    echo "<td>" . $row['bookingID'] .  "</td>";
+													echo "<td>" . $row['email'] .  "</td>";
+													echo "<td>" . $row['checkin'] . "</td>";
+													echo "<td>" . $row['checkout'] . "</td>";	
+													echo "<td>" . $row['roomtype'] . "</td>";	
+													echo "<td>" . $row['room_number'] . "</td>";	
 																			 									
 	                                            if ($row['status']  == 0) {
-											        echo "<td style='color:#00D100'>Available</td>";
-                                                } else {
-                                                    echo "<td style='color:#D10000'>Closed</td>";
-                                                }	
+											        echo "<td style='color:#FFB900'>Pending</td>";
+                                                } elseif ($row['status']  == 1) { 
+                                                    echo "<td style='color:#00D100'>Accepted</td>";
+                                                } elseif ($row['status']  == 2){
+													echo "<td style='color:#D10000'>Rejected</td>";
+												} elseif ($row['status']  == 3){
+													echo "<td style='color:#6495ED'>Finished</td>";
+												} else {
+													echo "ERROR 404";
+												}
 													
-												$room_number = $row['room_number'];		
+												$bookingID = $row['bookingID'];		
 														
-                    echo '<td><form action="function.php" method="POST">';
+                    echo '<td><form action="functions2.php" method="POST">';
 
-                    echo '<input type="hidden" name="appToClose" 
-												value="' . $room_number . '" >';
-                    echo '<button type="submit" value="Close Appointment" 
-												name="closeAppointment" class="btn btn-icon btn-danger">
-												<h7> Set Unavailable <h7></button>';	
+                    echo '<input type="hidden" name="appToAccept" 
+												value="' . $bookingID . '" >';
+                    echo '<button type="submit" value="Accept Booking" 
+												name="acceptBooking" class="btn btn-icon btn-success">
+												<h7>Accept<h7></button>';	
 														
-                    echo '&nbsp;&nbsp;<input type="hidden" name="appToOpen" 
-												value="' . $room_number . '" >';
-                    echo '<button type="submit" value="Open Appointment" 
-												name="openAppointment" class="btn btn-icon btn-success">
-												<h7> Set Available <h7></button>';
+                    echo '&nbsp;&nbsp;<input type="hidden" name="appToReject" 
+												value="' . $bookingID  . '" >';
+                    echo '<button type="submit" value="Reject Booking" 
+												name="rejectBooking" class="btn btn-icon btn-danger">
+												<h7>Reject<h7></button>';
                     echo '</form></td>';
 														
-                    echo '<td>'; 
   
 														
-                    echo '<form action="function.php" method="post" >';
-					echo '<input type="hidden" value="' . $room_number . '" name="RoomToDelete">';
-					echo '<button class="btn btn-success"><a href="updateroom.php?updateroom_number='.$room_number.'" class="text-light">Update</a></button>'; ?>&nbsp; <?php		
-                    echo '<input type="submit" class="btn btn-danger" name="deleteRoom" value="Delete">';					
-                    echo '</form>';
-                    echo '</td>';	
+	
 												
 													
 														
@@ -231,16 +237,19 @@ include 'database.php';
                                         </tbody>
                                     </table>
 								 <br>
-								 <h3>Executive Deluxe Guest Room</h3>
+								 <h3>Accepted Bookings</h3>
                                     <table class="content-table">
                                         <thead>
                                             <tr>
-                                                <th scope="col">Room Number</th>
-                                                <th scope="col">Room Type</th>
-                                                <th scope="col">Price</th>
+                                                <th scope="col">Booking ID</th>
+												<th scope="col">Email</th>
+												<th scope="col">Checkin</th>
+												<th scope="col">Checkout</th>
+												<th scope="col">Room Type</th>
+												<th scope="col">Room Number</th>
 												<th scope="col">Status</th>
-												<th scope="col">Update Status</th>
-                                                <th scope="col">Action</th>							
+												<th scope="col">Actions</th>
+												
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -251,7 +260,7 @@ include 'database.php';
                                                 {
                                                     die("Connection failed: " . $conn->connect_error);
                                                 }
-                                                $sql = "SELECT name, room_number, price, status FROM rooms WHERE name = 'Executive Deluxe Guest Room'";
+                                                $sql = "SELECT bookingID, email, checkin, checkout, roomtype, room_number, status  FROM bookings WHERE status = '1'";
                                                 $result = $conn->query($sql);
 																								
                                                 if ($result->num_rows > 0)  
@@ -259,41 +268,43 @@ include 'database.php';
                                                     // output data of each row
                                                     while($row = $result->fetch_assoc()) {
                                                     echo "<tr>";
-                                                    echo "<td>" . $row['room_number'] . "</td>";
-                                                    echo "<td>" . $row['name'] . "</td>";
-                                                    echo "<td>" . $row['price'] . "</td>";
+                                                    echo "<td>" . $row['bookingID'] .  "</td>";
+													echo "<td>" . $row['email'] .  "</td>";
+													echo "<td>" . $row['checkin'] . "</td>";
+													echo "<td>" . $row['checkout'] . "</td>";	
+													echo "<td>" . $row['roomtype'] . "</td>";	
+													echo "<td>" . $row['room_number'] . "</td>";	
 																			 									
 	                                            if ($row['status']  == 0) {
-											        echo "<td style='color:#00D100'>Available</td>";
-                                                } else {
-                                                    echo "<td style='color:#D10000'>Closed</td>";
-                                                }	
+											        echo "<td style='color:#FFB900'>Pending</td>";
+                                                } elseif ($row['status']  == 1) { 
+                                                    echo "<td style='color:#00D100'>Accepted</td>";
+                                                } elseif ($row['status']  == 2){
+													echo "<td style='color:#D10000'>Rejected</td>";
+												} elseif ($row['status']  == 3){
+													echo "<td style='color:#6495ED'>Finished</td>";
+												} else {
+													echo "ERROR 404";
+												}
 													
-												$room_number = $row['room_number'];		
+												$bookingID = $row['bookingID'];		
 														
-                    echo '<td><form action="function.php" method="POST">';
+                    echo '<td><form action="functions2.php" method="POST">';
 
-                    echo '<input type="hidden" name="appToClose" 
-												value="' . $room_number . '" >';
-                    echo '<button type="submit" value="Close Appointment" 
-												name="closeAppointment" class="btn btn-icon btn-danger">
-												<h7> Set Unavailable <h7></button>';	
+                    echo '<input type="hidden" name="appToFinish" 
+												value="' . $bookingID . '" >';
+                    echo '<button type="submit" value="Finish Booking" 
+												name="finishBooking" class="btn btn-icon btn-success">
+												<h7>Finish<h7></button>';	
 														
-                    echo '&nbsp;&nbsp;<input type="hidden" name="appToOpen" 
-												value="' . $room_number . '" >';
-                    echo '<button type="submit" value="Open Appointment" 
-												name="openAppointment" class="btn btn-icon btn-success">
-												<h7> Set Available <h7></button>';
                     echo '</form></td>';
+																					
 														
-                    echo '<td>';
-
-                    echo '<form action="function.php" method="post" >';
-					echo '<input type="hidden" value="' . $room_number . '" name="RoomToDelete">';	
-					echo '<button class="btn btn-success"><a href="updateroom.php?updateroom_number='.$room_number.'" class="text-light">Update</a></button>'; ?>&nbsp; <?php
-                    echo '<input type="submit" class="btn btn-danger" name="deleteRoom" value="Delete">';
-                    echo '</form>';
-                    echo '</td>';														
+  
+														
+	
+												
+													
 														
 																											
 														
@@ -302,175 +313,158 @@ include 'database.php';
                                                 } 
                                                 else 
                                                 { 
-
                                                     echo "0 results"; 	
                                                 }
                                                     $conn->close();									
                                             ?>
+											
+                                        </tbody>
+                                    </table>
+
+								 <br>
+								 <h3>Rejected Bookings</h3> 
+                                    <table class="content-table">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">Booking ID</th>
+												<th scope="col">Email</th>
+												<th scope="col">Checkin</th>
+												<th scope="col">Checkout</th>
+												<th scope="col">Room Type</th>
+												<th scope="col">Room Number</th>
+												<th scope="col">Status</th>
+												<th scope="col">Actions</th>
+												
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <?php
+                                                $conn = mysqli_connect("localhost", "root", "", "MHPBS");
+                                                // Check connection
+                                                if ($conn->connect_error) 
+                                                {
+                                                    die("Connection failed: " . $conn->connect_error);
+                                                }
+                                                $sql = "SELECT bookingID, email, checkin, checkout, roomtype, room_number, status  FROM bookings WHERE status = '2'";
+                                                $result = $conn->query($sql);
+																								
+                                                if ($result->num_rows > 0)  
+                                                {
+                                                    // output data of each row
+                                                    while($row = $result->fetch_assoc()) {
+                                                    echo "<tr>";
+                                                    echo "<td>" . $row['bookingID'] .  "</td>";
+													echo "<td>" . $row['email'] .  "</td>";
+													echo "<td>" . $row['checkin'] . "</td>";
+													echo "<td>" . $row['checkout'] . "</td>";	
+													echo "<td>" . $row['roomtype'] . "</td>";	
+													echo "<td>" . $row['room_number'] . "</td>";	
+																			 									
+	                                            if ($row['status']  == 0) {
+											        echo "<td style='color:#FFB900'>Pending</td>";
+                                                } elseif ($row['status']  == 1) { 
+                                                    echo "<td style='color:#00D100'>Accepted</td>";
+                                                } elseif ($row['status']  == 2){
+													echo "<td style='color:#D10000'>Rejected</td>";
+												} elseif ($row['status']  == 3){
+													echo "<td style='color:#6495ED'>Finished</td>";
+												} else {
+													echo "ERROR 404";
+												}
+													
+														
+												$bookingID = $row['bookingID'];		
+														
+                    echo '<td><form action="functions2.php" method="POST">';
+														
+					echo '<input type="hidden" value="' . $bookingID . '" name="appToDelete">';		
+                    echo '<input type="submit" class="btn btn-danger" name="deleteBooking" value="Delete">';					          
+														
+                    echo '</form></td>';
+														
+																																							
+																																											
+														
+                                                }
+                                                echo "</table>";
+                                                } 
+                                                else 
+                                                { 
+                                                    echo "0 results"; 	
+                                                }
+                                                    $conn->close();									
+                                            ?>
+											
+                                        </tbody>
+                                    </table>
+
+								
+								 <br>
+								 <h3>Finished Bookings</h3>	
+								
+                                    <table class="content-table">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">Booking ID</th>
+												<th scope="col">Email</th>
+												<th scope="col">Checkin</th>
+												<th scope="col">Checkout</th>
+												<th scope="col">Room Type</th>
+												<th scope="col">Room Number</th>
+												<th scope="col">Status</th>
+												
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <?php
+                                                $conn = mysqli_connect("localhost", "root", "", "MHPBS");
+                                                // Check connection
+                                                if ($conn->connect_error) 
+                                                {
+                                                    die("Connection failed: " . $conn->connect_error);
+                                                }
+                                                $sql = "SELECT bookingID, email, checkin, checkout, roomtype, room_number, status  FROM bookings WHERE status = '3'";
+                                                $result = $conn->query($sql);
+																								
+                                                if ($result->num_rows > 0)  
+                                                {
+                                                    // output data of each row
+                                                    while($row = $result->fetch_assoc()) {
+                                                    echo "<tr>";
+                                                    echo "<td>" . $row['bookingID'] .  "</td>";
+													echo "<td>" . $row['email'] .  "</td>";
+													echo "<td>" . $row['checkin'] . "</td>";
+													echo "<td>" . $row['checkout'] . "</td>";	
+													echo "<td>" . $row['roomtype'] . "</td>";	
+													echo "<td>" . $row['room_number'] . "</td>";	
+																			 									
+	                                            if ($row['status']  == 0) {
+											        echo "<td style='color:#FFB900'>Pending</td>";
+                                                } elseif ($row['status']  == 1) { 
+                                                    echo "<td style='color:#00D100'>Accepted</td>";
+                                                } elseif ($row['status']  == 2){
+													echo "<td style='color:#D10000'>Rejected</td>";
+												} elseif ($row['status']  == 3){
+													echo "<td style='color:#6495ED'>Finished</td>";
+												} else {
+													echo "ERROR 404";
+												}
+													
+												$bookingID = $row['bookingID'];		
+													
+                                                }
+                                                echo "</table>";
+                                                } 
+                                                else 
+                                                { 
+                                                    echo "0 results"; 	
+                                                }
+                                                    $conn->close();									
+                                            ?>
+											
                                         </tbody>
                                     </table>
 								
-								 <br>
-								 <h3>Executive Suite</h3> 
-								
-                                    <table class="content-table">
-                                        <thead>
-                                            <tr>
-                                                <th scope="col">Room Number</th>
-                                                <th scope="col">Room Type</th>
-                                                <th scope="col">Price</th>
-												<th scope="col">Status</th>
-												<th scope="col">Update Status</th>
-                                                <th scope="col">Action</th>							
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <?php
-                                                $conn = mysqli_connect("localhost", "root", "", "MHPBS");
-                                                // Check connection
-                                                if ($conn->connect_error) 
-                                                {
-                                                    die("Connection failed: " . $conn->connect_error);
-                                                }
-                                                $sql = "SELECT name, room_number, price, status FROM rooms WHERE name = 'Executive Suite'";
-                                                $result = $conn->query($sql);
-																								
-                                                if ($result->num_rows > 0)  
-                                                {
-                                                    // output data of each row
-                                                    while($row = $result->fetch_assoc()) {
-                                                    echo "<tr>";
-                                                    echo "<td>" . $row['room_number'] . "</td>";
-                                                    echo "<td>" . $row['name'] . "</td>";
-                                                    echo "<td>" . $row['price'] . "</td>";
-																			 									
-	                                            if ($row['status']  == 0) {
-											        echo "<td style='color:#00D100'>Available</td>";
-                                                } else {
-                                                    echo "<td style='color:#D10000'>Closed</td>";
-                                                }	
-													
-												$room_number = $row['room_number'];		
-														
-                    echo '<td><form action="function.php" method="POST">';
-
-                    echo '<input type="hidden" name="appToClose" 
-												value="' . $room_number . '" >';
-                    echo '<button type="submit" value="Close Appointment" 
-												name="closeAppointment" class="btn btn-icon btn-danger">
-												<h7> Set Unavailable <h7></button>';	
-														
-                    echo '&nbsp;&nbsp;<input type="hidden" name="appToOpen" 
-												value="' . $room_number . '" >';
-                    echo '<button type="submit" value="Open Appointment" 
-												name="openAppointment" class="btn btn-icon btn-success">
-												<h7> Set Available <h7></button>';
-                    echo '</form></td>';
-														
-                    echo '<td>';
-
-                    echo '<form action="function.php" method="post" >';
-					echo '<input type="hidden" value="' . $room_number . '" name="RoomToDelete">';	
-					echo '<button class="btn btn-success"><a href="updateroom.php?updateroom_number='.$room_number.'" class="text-light">Update</a></button>'; ?>&nbsp; <?php			
-                    echo '<input type="submit" class="btn btn-danger" name="deleteRoom" value="Delete">';
-                    echo '</form>';
-                    echo '</td>';														
-														
-																											
-														
-                                                }
-                                                echo "</table>";
-                                                } 
-                                                else 
-                                                { 
-
-                                                    echo "0 results"; 	
-                                                }
-                                                    $conn->close();									
-                                            ?>
-                                        </tbody>
-                                    </table>
-								
-								 <br>
-								 <h3>Palace Suite</h3>	
-								
-                                    <table class="content-table">
-                                        <thead>
-                                            <tr>
-                                                <th scope="col">Room Number</th>
-                                                <th scope="col">Room Type</th>
-                                                <th scope="col">Price</th>
-												<th scope="col">Status</th>
-												<th scope="col">Update Status</th>
-                                                <th scope="col">Action</th>							
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <?php
-                                                $conn = mysqli_connect("localhost", "root", "", "MHPBS");
-                                                // Check connection
-                                                if ($conn->connect_error) 
-                                                {
-                                                    die("Connection failed: " . $conn->connect_error);
-                                                }
-                                                $sql = "SELECT name, room_number, price, status FROM rooms WHERE name = 'Palace Suite'";
-                                                $result = $conn->query($sql);
-																								
-                                                if ($result->num_rows > 0)  
-                                                {
-                                                    // output data of each row
-                                                    while($row = $result->fetch_assoc()) {
-                                                    echo "<tr>";
-                                                    echo "<td>" . $row['room_number'] . "</td>";
-                                                    echo "<td>" . $row['name'] . "</td>";
-                                                    echo "<td>" . $row['price'] . "</td>";
-																			 									
-	                                            if ($row['status']  == 0) {
-											        echo "<td style='color:#00D100'>Available</td>";
-                                                } else {
-                                                    echo "<td style='color:#D10000'>Closed</td>";
-                                                }	
-													
-												$room_number = $row['room_number'];		
-														
-                    echo '<td><form action="function.php" method="POST">';
-
-                    echo '<input type="hidden" name="appToClose" 
-												value="' . $room_number . '" >';
-                    echo '<button type="submit" value="Close Appointment" 
-												name="closeAppointment" class="btn btn-icon btn-danger">
-												<h7> Set Unavailable <h7></button>';	
-														
-                    echo '&nbsp;&nbsp;<input type="hidden" name="appToOpen" 
-												value="' . $room_number . '" >';
-                    echo '<button type="submit" value="Open Appointment" 
-												name="openAppointment" class="btn btn-icon btn-success">
-												<h7> Set Available <h7></button>';
-                    echo '</form></td>';
-														
-                    echo '<td>';
-
-                    echo '<form action="function.php" method="post" >';
-					echo '<input type="hidden" value="' . $room_number . '" name="RoomToDelete">';
-					echo '<button class="btn btn-success"><a href="updateroom.php?updateroom_number='.$room_number.'" class="text-light">Update</a></button>'; ?>&nbsp; <?php		
-                    echo '<input type="submit" class="btn btn-danger" name="deleteRoom" value="Delete">';
-                    echo '</form>';
-                    echo '</td>';														
-														
-																											
-														
-                                                }
-                                                echo "</table>";
-                                                } 
-                                                else 
-                                                { 
-
-                                                    echo "0 results"; 	
-                                                }
-                                                    $conn->close();									
-                                            ?>
-                                        </tbody>
-                                    </table>								
                                 </link>
                             </div>
                         </div>        

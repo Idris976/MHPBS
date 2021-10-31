@@ -15,10 +15,12 @@ $result =  mysqli_query($connection,$sql);
 $row=mysqli_fetch_assoc($result);
 
 $username = $row['username'];
-$email = $row['email'];
 $firstname = $row['firstname'];
 $lastname = $row['lastname'];
+$email = $row['email'];
+$ic = $row['ic'];
 $phone = $row['phone'];
+$address = $row['address'];
 $createdate = $row['createdate'];
 
 ?>
@@ -69,8 +71,8 @@ $createdate = $row['createdate'];
                     
                     <div class="mt-3">
                       <h4><?php echo $_SESSION['username'] ?></h4>
-                      <p class="text-secondary mb-1">Full Stack Developer</p>
-                      <p class="text-muted font-size-sm">Bay Area, San Francisco, CA</p>
+                      <p class="text-secondary mb-1">Marriott Hotel Putrajaya</p>
+                      <p class="text-muted font-size-sm">Customer</p>
                     </div>
                   </div>
                 </div>
@@ -129,6 +131,15 @@ $createdate = $row['createdate'];
                       <?php echo $email?>
                     </div>
                   </div>
+					<hr>
+                  <div class="row">
+                    <div class="col-sm-3">
+                      <h6 class="mb-0">IC Number</h6>
+                    </div>
+                    <div class="col-sm-9 text-secondary">
+                      <?php echo $ic?>
+                    </div>
+                  </div>					
                   <hr>
                   <div class="row">
                     <div class="col-sm-3">
@@ -139,6 +150,15 @@ $createdate = $row['createdate'];
                     </div>
                   </div>
                   <hr>
+                  <div class="row">
+                    <div class="col-sm-3">
+                      <h6 class="mb-0">Address</h6>
+                    </div>
+                    <div class="col-sm-9 text-secondary">
+                      <?php echo $address?>
+                    </div>
+                  </div>
+					<hr>
                   <div class="row">
                     <div class="col-sm-3">
                       <h6 class="mb-0">Last Updated</h6>
@@ -153,7 +173,7 @@ $createdate = $row['createdate'];
                   <div class="row">
                     <div class="col-sm-12">
                       <form action="upload.php" method="post" enctype="multipart/form-data">
-                      <input type="file" name="image_customer">
+                      <input class="btn btn-info " type="file" name="image_customer">
                       <input type="submit" name="upload_image_customer" value="upload" class="btn btn-primary">
                       </form>
                       
@@ -163,8 +183,8 @@ $createdate = $row['createdate'];
 
 
                   <div class="row">
-                    <div class="col-sm-12">
-                      <a class="btn btn-info " target="__blank" href="update_form_cust.php">Edit</a>
+                    <div class="col-sm-12"> <br>
+                      <a class="btn btn-info " target="__blank" href="update_form_cust.php">Update Profile</a>
                     </div>
                   </div>
                 </div>

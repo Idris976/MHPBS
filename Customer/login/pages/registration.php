@@ -2,8 +2,6 @@
 $error = NULL;
 $notice = NULL;
 
-
-
 // Import PHPMailer classes into the global namespace
 
 use PHPMailer\PHPMailer\PHPMailer;
@@ -25,11 +23,14 @@ if(isset ($_POST['submit'])){
 	$password = $_POST['password'];
 	$password2 = $_POST['password2'];
 	$email = $_POST['email'];
+	$ic = $_POST['ic'];
 	$phone = $_POST['phone'];
+	$address = $_POST['address'];
 	
 	$checkemail = mysqli_query($mysqli, "SELECT * FROM users WHERE email = '$email'");
 	$checkusername = mysqli_query($mysqli, "SELECT * FROM users WHERE username = '$username'");	
 	$checkphone = mysqli_query($mysqli, "SELECT * FROM users WHERE phone = '$phone'");
+	$checkic = mysqli_query($mysqli, "SELECT * FROM users WHERE ic = '$ic'");
 	
 	$uppercase = preg_match('@[A-Z]@', $password);
     $lowercase = preg_match('@[a-z]@', $password);
@@ -48,6 +49,8 @@ if(isset ($_POST['submit'])){
 		$error = "This Username Has Already Been Used";
 	}elseif (mysqli_num_rows($checkphone) > 0 ){
 		$error = "This Phone Number Has Already Been Used";
+	}elseif (mysqli_num_rows($checkic) > 0 ){
+		$error = "This Identification Number Has Already Been Used";
 	}else{
 		//Form Is Valid 
 		
@@ -71,7 +74,7 @@ if(isset ($_POST['submit'])){
 		
 		//Insert account into database
 		$password = md5 ($password);
-		$insert = $mysqli->query("INSERT into users(firstname,lastname,username,password,email,phone,vkey) VALUES ( '$firstname','$lastname','$username','$password','$email','$phone','$vkey')");
+		$insert = $mysqli->query("INSERT into users(firstname,lastname,username,password,email,ic,phone,address,vkey) VALUES ( '$firstname','$lastname','$username','$password','$email','$ic','$phone','$address','$vkey')");
 		
 		if($insert){
 			
@@ -137,7 +140,7 @@ function send_mail($to, $subject, $message)
   <link rel="apple-touch-icon" sizes="76x76" href="../assets/img/apple-icon.png">
   <link rel="icon" type="image/png" href="../assets/img/favicon.png">
   <title>
-    Soft UI Dashboard by Creative Tim
+    Hotel Guest Registration
   </title>
   <!--     Fonts and icons     -->
   <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
@@ -193,9 +196,15 @@ function send_mail($to, $subject, $message)
                 <div class="mb-3">					
                   <input type="email" name="email" class="form-control" placeholder="Email" aria-label="Email" aria-describedby="email-addon">
                 </div>
+                <div class="mb-3">					
+                  <input type="text" name="ic" class="form-control" placeholder="Identification Number" aria-label="Identification Number" aria-describedby="email-addon">
+                </div>				  
                 <div class="mb-3">
                   <input type="text" name="phone" class="form-control" placeholder="Phone Number" aria-label="Phone Number" aria-describedby="email-addon">
-                </div>				  
+                </div>	
+                <div class="mb-3">					
+                  <input type="text" name="address" class="form-control" placeholder="Address" aria-label="Address" aria-describedby="email-addon">
+                </div>					  
                 <div class="form-check form-check-info text-left">
                   <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" checked>
                   <label class="form-check-label" for="flexCheckDefault">

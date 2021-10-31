@@ -9,13 +9,13 @@ $result =  mysqli_query($connection,$sql);
 $row=mysqli_fetch_assoc($result);
 
 $username = $row['username'];
-$email = $row['email'];
 $firstname = $row['firstname'];
 $lastname = $row['lastname'];
+$email = $row['email'];
+$ic = $row['ic'];
 $phone = $row['phone'];
+$address = $row['address'];
 
-
-  
   ?>
     <meta charset="utf-8">
     <!--  This file has been downloaded from bootdey.com @bootdey on twitter -->
@@ -90,6 +90,14 @@ $phone = $row['phone'];
 									<input readonly type="text" name="email" class="form-control" value="<?php echo $email?>">
 								</div>
 							</div>
+								<div class="row mb-3">
+								<div class="col-sm-3">
+									<h6 class="mb-0">IC Number</h6>
+								</div>
+								<div class="col-sm-9 text-secondary">
+									<input type="text" name="ic" class="form-control" value="<?php echo $ic?>" readonly>
+								</div>
+							</div>									
 							<div class="row mb-3">
 								<div class="col-sm-3">
 									<h6 class="mb-0">Phone No.</h6>
@@ -98,10 +106,18 @@ $phone = $row['phone'];
 									<input type="text" name="phone" class="form-control" value="<?php echo $phone?>">
 								</div>
 							</div>
+								<div class="row mb-3">
+								<div class="col-sm-3">
+									<h6 class="mb-0">Address</h6>
+								</div>
+								<div class="col-sm-9 text-secondary">
+									<input type="text" name="address" class="form-control" value="<?php echo $address?>">
+								</div>
+							</div>										
 							<div class="row">
 								<div class="col-sm-3"></div>
 								<div class="col-sm-9 text-secondary">
-									<button type="submit" name="update_cust_data" class= "btn-btn">Update</button>			
+									<button type="submit" name="update_cust_data" class="btn btn-info "	>Update</button>			
 								</div>							
 							</div>
 						</div>

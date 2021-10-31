@@ -9,9 +9,11 @@ if(isset($_POST['update_cust_data']))
     $firstname=$_POST['firstname'];
     $lastname=$_POST['lastname'];
     $email=$_POST['email'];
+	$ic=$_POST['ic'];
     $phone=$_POST['phone'];
+	$address=$_POST['address'];
 
-    $query = "UPDATE users SET firstname ='$firstname', lastname='$lastname', email='$email', phone='$phone' WHERE id='$id'";
+    $query = "UPDATE users SET firstname ='$firstname', lastname='$lastname', email='$email', ic ='$ic', phone='$phone', address='$address' WHERE id='$id'";
     $query_run = mysqli_query($connection, $query);
 
     if($query_run)

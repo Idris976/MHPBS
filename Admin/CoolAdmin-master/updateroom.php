@@ -1,32 +1,28 @@
 <?php
 include 'database.php';
-$id = $_GET['updateid'];
+$room_number = $_GET['updateroom_number'];
 
 //Show data frm database
-$sql="SELECT * FROM users where id=$id";
+$sql="SELECT * FROM rooms where room_number = $room_number";
 $result=mysqli_query($connection,$sql);
 $row=mysqli_fetch_assoc($result);
-$firstname= $row['firstname'];
-$lastname=$row['lastname'];
-$email=$row['email']; 
-$phone=$row['phone'];
+
+$name=$row['name'];
+$price=$row['price']; 
 
 
 //update new data 
 if(isset($_POST['submit'])){
-    $firstname=$_POST['firstname'];
-    $lastname=$_POST['lastname'];
-    $email=$_POST['email'];
-    $ic=$_POST['ic'];	
-    $phone=$_POST['phone'];
-	$address=$_POST['address'];
+    $room_number=$_POST['room_number'];
+    $name=$_POST['name'];
+    $price=$_POST['price'];
 
-    $sql="UPDATE users SET id=$id, firstname='$firstname',lastname='$lastname',email='$email',ic='$ic',phone='$phone',address='$address' where id=$id ";
+    $sql="UPDATE rooms SET room_number=$room_number, name='$name',price='$price' where room_number=$room_number ";
     $result=mysqli_query($connection,$sql);
     
     if($result){
         //echo"update succesfully";
-        header('location:viewcust.php');
+        header('location:viewroom.php');
 		exit;
     }else{
         die("Connection failed " . $connection->connect_error);
@@ -85,29 +81,17 @@ if(isset($_POST['submit'])){
                         <div class="login-form">
                             <form action="" method="POST">
                                 <div class="form-group">
-                                    <label>First Name</label>
-                                    <input class="au-input au-input--full" type="text" name="firstname" placeholder="First Name" value="<?php echo $row['firstname'];?>">
+                                    <label>Room Number</label>
+                                    <input class="au-input au-input--full" type="text" name="room_number" placeholder="Room Number" value="<?php echo $row['room_number'];?>" readonly>
                                 </div>
                                 <div class="form-group">
-                                    <label>Last Name</label>
-                                    <input class="au-input au-input--full" type="text" name="lastname" placeholder="Last Name" value="<?php echo $row['lastname'];?>">
+                                    <label>Room Type</label>
+                                    <input class="au-input au-input--full" type="text" name="name" placeholder="Room Type" value="<?php echo $row['name'];?>" readonly>
                                 </div>
                                 <div class="form-group">
-                                    <label>Email</label>
-                                    <input class="au-input au-input--full" type="text" name="email" placeholder="Email" value="<?php echo $row['email'];?>" readonly>
+                                    <label>Price</label>
+                                    <input class="au-input au-input--full" type="text" name="price" placeholder="Price" value="<?php echo $row['price'];?>">
                                 </div>
-                                <div class="form-group">
-                                    <label>Identification Number</label>
-                                    <input class="au-input au-input--full" type="text" name="ic" placeholder="Identification Number" value="<?php echo $row['ic'];?>">
-                                </div>								
-                                <div class="form-group">
-                                    <label>Phone Number</label>
-                                    <input class="au-input au-input--full" type="text" name="phone" placeholder="Phone Number" value="<?php echo $row['phone'];?>">
-                                </div>
-                                <div class="form-group">
-                                    <label>Address</label>
-                                    <input class="au-input au-input--full" type="text" name="address" placeholder="House Address" value="<?php echo $row['address'];?>">
-                                </div>								
 
 								                <input class="au-btn au-btn--block au-btn--green m-b-20" id="button" type ="submit" name ="submit" value="Update">
                             </form>
@@ -143,4 +127,4 @@ if(isset($_POST['submit'])){
     <!-- Main JS-->
     <script src="js/main.js"></script>
 
-</body>
+</body>	

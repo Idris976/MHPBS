@@ -153,7 +153,9 @@ include 'database.php';
                                                 <th scope="col"> First Name</th>
                                                 <th scope="col">Last Name</th>
                                                 <th scope="col">Email</th>
+												<th scope="col">IC Number</th>
                                                 <th scope="col">Contact Number</th>
+												<th scope="col">Address</th>
                                                 <th scope="col">Action</th>
                                             </tr>
                                         </thead>
@@ -165,23 +167,28 @@ include 'database.php';
                                                 {
                                                     while($row=mysqli_fetch_assoc($result))
                                                     {
-                                                        $id=$row['id'];
-                                                        $firstname= $row['firstname'];
-                                                        $lastname= $row['lastname'];
-                                                        $email=$row['email']; 
-                                                        $phone=$row['phone'];
+                                                        $id = $row['id'];
+                                                        $firstname = $row['firstname'];
+                                                        $lastname = $row['lastname'];
+                                                        $email = $row['email'];
+														$ic = $row['ic'];
+                                                        $phone = $row['phone'];
+														$address = $row['address'];
                                                         echo
                                                         '<tr>
                                                             <th scope="row">'.$id.'</th>
                                                             <td>'.$firstname.'</td>
                                                             <td>'.$lastname.'</td>
                                                             <td>'.$email.'</td>
+															<td>'.$ic.'</td> 
                                                             <td>'.$phone.'</td>
+															<td>'.$address.'</td>  
                                                             <td>
-                                                                <button class="btn btn-success"><a href="updatecust.php?updateid='.$id.'" class="text-light">Update</a></button>
+                                                                <button class="btn btn-success"><a href="updatecust.php?updateid='.$id.'" class="text-light">Update</a></button> 
+								                                 <br><br>
                                                                 <button class="btn btn-danger"><a href="deletecust.php?deleteid='.$id.'" class="text-light">Delete</a> </button>
                                                             </td>
-                                                        </tr>';
+                                                        </tr>';	
                                                     }
                                                 }
                                             ?>

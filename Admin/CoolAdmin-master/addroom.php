@@ -198,7 +198,18 @@ if(isset ($_POST['submit'])){
                 									<form action="" method="POST">
                         								<div class="form-group">
                             								<label>Room Name</label>
-                            								<input class="au-input au-input--full" type="text" name="name" placeholder="Room Name">
+                    <select name="name" class="form-control" required>
+                      <option value="">Room Type</option>
+                      <?php
+                      $con = mysqli_connect("localhost", "root", "", "MHPBS");
+                      $sql = "SELECT * FROM roomtype";
+                      $result = mysqli_query($con, $sql);
+                      while ($row = mysqli_fetch_array($result)) {
+                        echo "<option value='{$row['name']}'>" . $row['name'] . "</option>";
+                      }
+                      ?>
+                    </select>
+                  </div>           
                         								</div>
                         									<div class="form-group">
                             									<label>Room Number</label>
