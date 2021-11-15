@@ -43,7 +43,7 @@ session_start();
 	  {	
 		    //save to database
 		    $bookingID = random_num(10);
-		    $query = "insert into bookings (bookingID,,firstname,lastname,email,ic,phone,address,checkin,checkout,roomtype,room_number) values ('$bookingID','$firstname','$lastname','$email','$ic','$phone','$address','$checkin','$checkout','$roomtype','$room_number')";
+		    $query = "insert into bookings (bookingID,firstname,lastname,email,ic,phone,address,checkin,checkout,roomtype,room_number) values ('$bookingID','$firstname','$lastname','$email','$ic','$phone','$address','$checkin','$checkout','$roomtype','$room_number')";
 		  
 		  mysqli_query($connection, $query);
 		  

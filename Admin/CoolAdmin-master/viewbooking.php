@@ -43,7 +43,7 @@ include 'database.php';
 
 </head>
 
-<body class="animsition">
+<body class="animsition">	
     <div class="page-wrapper">
         <!-- MENU SIDEBAR-->
         <aside class="menu-sidebar d-none d-lg-block">
@@ -154,11 +154,12 @@ include 'database.php';
                                         <thead>
                                             <tr>
                                                 <th scope="col">Booking ID</th>
+												<th scope="col">Payment ID</th>
+												<th scope="col">Name</th>
 												<th scope="col">Email</th>
 												<th scope="col">Checkin</th>
 												<th scope="col">Checkout</th>
 												<th scope="col">Room Type</th>
-												<th scope="col">Room Number</th>
 												<th scope="col">Status</th>
 												<th scope="col">Actions</th>
 												
@@ -172,7 +173,7 @@ include 'database.php';
                                                 {
                                                     die("Connection failed: " . $conn->connect_error);
                                                 }
-                                                $sql = "SELECT bookingID, email, checkin, checkout, roomtype, room_number, status  FROM bookings WHERE status = '0'";
+                                                $sql = "SELECT bookingID, paymentID, lastname, email, checkin, checkout, roomtype, status  FROM bookings WHERE status = '0'";
                                                 $result = $conn->query($sql);
 																								
                                                 if ($result->num_rows > 0)  
@@ -181,11 +182,12 @@ include 'database.php';
                                                     while($row = $result->fetch_assoc()) {
                                                     echo "<tr>";
                                                     echo "<td>" . $row['bookingID'] .  "</td>";
+													echo "<td>" . $row['paymentID'] .  "</td>";
+													echo "<td>" . $row['lastname'] .  "</td>";	
 													echo "<td>" . $row['email'] .  "</td>";
 													echo "<td>" . $row['checkin'] . "</td>";
 													echo "<td>" . $row['checkout'] . "</td>";	
-													echo "<td>" . $row['roomtype'] . "</td>";	
-													echo "<td>" . $row['room_number'] . "</td>";	
+													echo "<td>" . $row['roomtype'] . "</td>";		
 																			 									
 	                                            if ($row['status']  == 0) {
 											        echo "<td style='color:#FFB900'>Pending</td>";
@@ -242,11 +244,12 @@ include 'database.php';
                                         <thead>
                                             <tr>
                                                 <th scope="col">Booking ID</th>
+												<th scope="col">Payment ID</th>
+												<th scope="col">Name</th>
 												<th scope="col">Email</th>
 												<th scope="col">Checkin</th>
 												<th scope="col">Checkout</th>
 												<th scope="col">Room Type</th>
-												<th scope="col">Room Number</th>
 												<th scope="col">Status</th>
 												<th scope="col">Actions</th>
 												
@@ -260,7 +263,7 @@ include 'database.php';
                                                 {
                                                     die("Connection failed: " . $conn->connect_error);
                                                 }
-                                                $sql = "SELECT bookingID, email, checkin, checkout, roomtype, room_number, status  FROM bookings WHERE status = '1'";
+                                                $sql = "SELECT bookingID, paymentID, lastname, email, checkin, checkout, roomtype, status  FROM bookings WHERE status = '1'";
                                                 $result = $conn->query($sql);
 																								
                                                 if ($result->num_rows > 0)  
@@ -269,23 +272,24 @@ include 'database.php';
                                                     while($row = $result->fetch_assoc()) {
                                                     echo "<tr>";
                                                     echo "<td>" . $row['bookingID'] .  "</td>";
+													echo "<td>" . $row['paymentID'] .  "</td>";
+													echo "<td>" . $row['lastname'] .  "</td>";	
 													echo "<td>" . $row['email'] .  "</td>";
 													echo "<td>" . $row['checkin'] . "</td>";
 													echo "<td>" . $row['checkout'] . "</td>";	
-													echo "<td>" . $row['roomtype'] . "</td>";	
-													echo "<td>" . $row['room_number'] . "</td>";	
+													echo "<td>" . $row['roomtype'] . "</td>";		
 																			 									
-	                                            if ($row['status']  == 0) {
-											        echo "<td style='color:#FFB900'>Pending</td>";
-                                                } elseif ($row['status']  == 1) { 
-                                                    echo "<td style='color:#00D100'>Accepted</td>";
-                                                } elseif ($row['status']  == 2){
-													echo "<td style='color:#D10000'>Rejected</td>";
-												} elseif ($row['status']  == 3){
-													echo "<td style='color:#6495ED'>Finished</td>";
-												} else {
-													echo "ERROR 404";
-												}
+																				if ($row['status']  == 0) {
+																					echo "<td style='color:#FFB900'>Pending</td>";
+																				} elseif ($row['status']  == 1) { 
+																					echo "<td style='color:#00D100'>Accepted</td>";
+																				} elseif ($row['status']  == 2){
+																					echo "<td style='color:#D10000'>Rejected</td>";
+																				} elseif ($row['status']  == 3){
+																					echo "<td style='color:#6495ED'>Finished</td>";
+																				} else {
+																					echo "ERROR 404";
+																				}
 													
 												$bookingID = $row['bookingID'];		
 														
@@ -327,11 +331,12 @@ include 'database.php';
                                         <thead>
                                             <tr>
                                                 <th scope="col">Booking ID</th>
+												<th scope="col">Payment ID</th>
+												<th scope="col">Name</th>
 												<th scope="col">Email</th>
 												<th scope="col">Checkin</th>
 												<th scope="col">Checkout</th>
 												<th scope="col">Room Type</th>
-												<th scope="col">Room Number</th>
 												<th scope="col">Status</th>
 												<th scope="col">Actions</th>
 												
@@ -345,7 +350,7 @@ include 'database.php';
                                                 {
                                                     die("Connection failed: " . $conn->connect_error);
                                                 }
-                                                $sql = "SELECT bookingID, email, checkin, checkout, roomtype, room_number, status  FROM bookings WHERE status = '2'";
+                                                $sql = "SELECT bookingID, paymentID, lastname, email, checkin, checkout, roomtype, status FROM bookings WHERE status = '2'";
                                                 $result = $conn->query($sql);
 																								
                                                 if ($result->num_rows > 0)  
@@ -354,11 +359,12 @@ include 'database.php';
                                                     while($row = $result->fetch_assoc()) {
                                                     echo "<tr>";
                                                     echo "<td>" . $row['bookingID'] .  "</td>";
+													echo "<td>" . $row['paymentID'] .  "</td>";
+													echo "<td>" . $row['lastname'] .  "</td>";
 													echo "<td>" . $row['email'] .  "</td>";
 													echo "<td>" . $row['checkin'] . "</td>";
 													echo "<td>" . $row['checkout'] . "</td>";	
-													echo "<td>" . $row['roomtype'] . "</td>";	
-													echo "<td>" . $row['room_number'] . "</td>";	
+													echo "<td>" . $row['roomtype'] . "</td>";		
 																			 									
 	                                            if ($row['status']  == 0) {
 											        echo "<td style='color:#FFB900'>Pending</td>";
@@ -406,11 +412,12 @@ include 'database.php';
                                         <thead>
                                             <tr>
                                                 <th scope="col">Booking ID</th>
+												<th scope="col">Payment ID</th>
+												<th scope="col">Name</th>
 												<th scope="col">Email</th>
 												<th scope="col">Checkin</th>
 												<th scope="col">Checkout</th>
 												<th scope="col">Room Type</th>
-												<th scope="col">Room Number</th>
 												<th scope="col">Status</th>
 												
                                             </tr>
@@ -423,7 +430,7 @@ include 'database.php';
                                                 {
                                                     die("Connection failed: " . $conn->connect_error);
                                                 }
-                                                $sql = "SELECT bookingID, email, checkin, checkout, roomtype, room_number, status  FROM bookings WHERE status = '3'";
+                                                $sql = "SELECT bookingID, paymentID, lastname, email, checkin, checkout, roomtype, status FROM bookings WHERE status = '3'";
                                                 $result = $conn->query($sql);
 																								
                                                 if ($result->num_rows > 0)  
@@ -432,11 +439,12 @@ include 'database.php';
                                                     while($row = $result->fetch_assoc()) {
                                                     echo "<tr>";
                                                     echo "<td>" . $row['bookingID'] .  "</td>";
+													echo "<td>" . $row['paymentID'] .  "</td>";
+													echo "<td>" . $row['lastname'] .  "</td>";	
 													echo "<td>" . $row['email'] .  "</td>";
 													echo "<td>" . $row['checkin'] . "</td>";
 													echo "<td>" . $row['checkout'] . "</td>";	
-													echo "<td>" . $row['roomtype'] . "</td>";	
-													echo "<td>" . $row['room_number'] . "</td>";	
+													echo "<td>" . $row['roomtype'] . "</td>";		
 																			 									
 	                                            if ($row['status']  == 0) {
 											        echo "<td style='color:#FFB900'>Pending</td>";

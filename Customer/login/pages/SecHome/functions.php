@@ -1,5 +1,4 @@
 <?php
-session_start();
 
 //If not login user will be directed to main page
 function check_login($connection)
